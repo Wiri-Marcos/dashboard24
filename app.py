@@ -12,7 +12,7 @@ def home():
 @app.route('/api/dashboard')
 def api_dashboard():
     try:
-        response = requests.get("https://n8n-n8n-start.gwlcya.easypanel.host/webhook/dashboard", timeout=13)
+        response = requests.get("https://n8n-n8n-start.gwlcya.easypanel.host/webhook/dashboard", timeout=5)
         data = response.json()
         return {
             "clientes_sem_sinal": data.get("clientes_sem_sinal", 0),
