@@ -2,116 +2,197 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <title>Dashboard - Indicadores</title>
+    <title>Sigma + Serviço - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
       body {
         font-family: 'Roboto', Arial, sans-serif;
         margin: 0;
-        background: linear-gradient(120deg, #232526, #414345);
+        background: #10182a;
         min-height: 100vh;
-        color: #f5f5f5;
+        color: #e6e6e6;
       }
-      .container {
-        max-width: 700px;
-        margin: 40px auto;
-        padding: 30px 20px;
-        background: rgba(34, 40, 49, 0.95);
-        border-radius: 18px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      }
-      h1 {
+      .header {
         text-align: center;
-        font-weight: 700;
+        padding-top: 32px;
+        margin-bottom: 10px;
+      }
+      .header h1 {
+        font-size: 2.6em;
+        font-weight: 900;
         letter-spacing: 1px;
-        margin-bottom: 32px;
-        color: #00adb5;
-        text-shadow: 0 2px 8px #222;
+        margin: 0;
+        background: linear-gradient(90deg, #2dd4bf 40%, #22d3ee 60%, #22c55e 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .header p {
+        margin: 8px 0 0 0;
+        font-size: 1.15em;
+        color: #b0b8c1;
+      }
+      .header .atualiza {
+        margin-top: 8px;
+        font-size: 0.98em;
+        color: #22d3ee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .header .atualiza i {
+        color: #22c55e;
+        font-size: 0.8em;
+      }
+      .dashboard {
+        display: flex;
+        gap: 32px;
+        justify-content: center;
+        margin-top: 32px;
+        flex-wrap: wrap;
       }
       .card {
-        padding: 24px 20px;
-        border: none;
-        margin-bottom: 24px;
-        border-radius: 12px;
-        background: linear-gradient(120deg, #393e46 60%, #222831 100%);
-        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
-        transition: transform 0.2s, box-shadow 0.2s;
+        background: #19213a;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.18);
+        padding: 28px 28px 22px 28px;
+        min-width: 320px;
+        max-width: 340px;
+        flex: 1 1 320px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin-bottom: 18px;
       }
-      .card:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 8px 24px 0 rgba(0,0,0,0.25);
+      .card .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
       }
-      .card h3 {
-        margin-top: 0;
-        color: #00adb5;
+      .card .card-header .icon {
+        font-size: 1.3em;
+        margin-right: 2px;
+      }
+      .card .card-header .badge {
+        font-size: 0.95em;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 2px 12px;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+      .badge-critico {
+        background: #2e1a1a;
+        color: #ff5c5c;
+        border: 1px solid #ff5c5c;
+      }
+      .badge-alerta {
+        background: #3a2e1a;
+        color: #ffc857;
+        border: 1px solid #ffc857;
+      }
+      .badge-metrica {
+        background: #1a263a;
+        color: #22d3ee;
+        border: 1px solid #22d3ee;
+      }
+      .card .valor {
+        font-size: 2.6em;
         font-weight: 700;
-        margin-bottom: 12px;
+        color: #22a6f2;
+        margin: 0 0 8px 0;
       }
-      .card p, .card ul {
-        font-size: 1.2em;
-        margin: 0;
+      .card .valor.percentual {
+        color: #22c55e;
       }
-      ul#top5_disparos {
-        list-style: none;
-        padding: 0;
+      .card .descricao {
+        font-size: 1em;
+        color: #b0b8c1;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
-      ul#top5_disparos li {
-        background: #00adb5;
-        color: #222831;
-        margin-bottom: 6px;
-        padding: 8px 14px;
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #232c43;
         border-radius: 6px;
-        font-weight: 500;
-        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
-        transition: background 0.2s, color 0.2s;
+        margin: 12px 0 6px 0;
+        overflow: hidden;
       }
-      ul#top5_disparos li:hover {
-        background: #393e46;
-        color: #00adb5;
+      .progress {
+        height: 100%;
+        background: linear-gradient(90deg, #22c55e 60%, #22d3ee 100%);
+        border-radius: 6px;
+        transition: width 0.5s;
       }
-      @media (max-width: 800px) {
-        .container { max-width: 98vw; padding: 10px; }
+      @media (max-width: 1100px) {
+        .dashboard { flex-direction: column; align-items: center; gap: 18px; }
+        .card { min-width: 260px; max-width: 98vw; }
       }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Dashboard de Monitoramento</h1>
-      <div class="card">
-        <h3>Clientes sem sinal:</h3>
-        <p id="clientes_sem_sinal">Carregando...</p>
+</head>
+<body>
+  <div class="header">
+    <h1><span style="color:#22a6f2">Sigma</span> + <span style="color:#22c55e">Serviço</span></h1>
+    <p>Dashboard de Monitoramento em Tempo Real</p>
+    <div class="atualiza"><i class="fa fa-circle"></i> Atualizando a cada <span id="intervalo">5</span> segundos</div>
+  </div>
+  <div class="dashboard">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-exclamation-circle icon" style="color:#ff5c5c"></i>
+        <span style="font-weight:700">OS Atrasadas</span>
+        <span class="badge badge-critico">Crítico</span>
       </div>
-      <div class="card">
-        <h3>O.S. em atraso:</h3>
-        <p id="os_em_atraso">Carregando...</p>
-      </div>
-      <div class="card">
-        <h3>Top 5 Clientes com mais disparos:</h3>
-        <ul id="top5_disparos">Carregando...</ul>
-      </div>
-      <div class="card">
-        <h3>Atualização Cadastral:</h3>
-        <p id="percentual_atualizacao">Carregando...</p>
-      </div>
+      <div class="valor" id="os_em_atraso">0</div>
+      <div class="descricao"><i class="fa fa-info-circle"></i> Ordens de serviço com prazo vencido</div>
     </div>
-    <script>
-      async function atualizarDashboard() {
-        const response = await fetch("/api/dashboard");
-        const data = await response.json();
-        document.getElementById("clientes_sem_sinal").textContent = data.clientes_sem_sinal;
-        document.getElementById("os_em_atraso").textContent = data.os_em_atraso;
-        const top5 = data.top5_disparos;
-        const ul = document.getElementById("top5_disparos");
-        ul.innerHTML = "";
-        top5.forEach(cliente => {
-          const li = document.createElement("li");
-          li.textContent = cliente;
-          ul.appendChild(li);
-        });
-        document.getElementById("percentual_atualizacao").textContent = data.percentual_atualizacao;
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-wifi icon" style="color:#ffc857"></i>
+        <span style="font-weight:700">Clientes Sem Sinal</span>
+        <span class="badge badge-alerta">Alerta</span>
+      </div>
+      <div class="valor" id="clientes_sem_sinal">0</div>
+      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes sem comunicação nos últimos 30 min</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-database icon" style="color:#22d3ee"></i>
+        <span style="font-weight:700">Atualização Cadastral</span>
+        <span class="badge badge-metrica">Métrica</span>
+      </div>
+      <div class="valor percentual" id="percentual_atualizacao">0%</div>
+      <div class="progress-bar"><div class="progress" id="progress-bar" style="width:0%"></div></div>
+      <div class="descricao"><i class="fa fa-info-circle"></i> Percentual de cadastros atualizados</div>
+    </div>
+  </div>
+  <script>
+    const INTERVALO = 5; // segundos
+    document.getElementById('intervalo').textContent = INTERVALO;
+    async function atualizarDashboard() {
+      const response = await fetch("/api/dashboard");
+      const data = await response.json();
+      document.getElementById("clientes_sem_sinal").textContent = data.clientes_sem_sinal;
+      document.getElementById("os_em_atraso").textContent = data.os_em_atraso;
+      document.getElementById("percentual_atualizacao").textContent = data.percentual_atualizacao;
+      // Atualiza barra de progresso
+      let perc = 0;
+      if (typeof data.percentual_atualizacao === 'string' && data.percentual_atualizacao.includes('%')) {
+        perc = parseInt(data.percentual_atualizacao);
+      } else if (!isNaN(data.percentual_atualizacao)) {
+        perc = data.percentual_atualizacao;
       }
-      setInterval(atualizarDashboard, 5000);
-      atualizarDashboard();
-    </script>
-  </body>
+      document.getElementById("progress-bar").style.width = perc + "%";
+    }
+    setInterval(atualizarDashboard, INTERVALO * 1000);
+    atualizarDashboard();
+  </script>
+</body>
 </html>
