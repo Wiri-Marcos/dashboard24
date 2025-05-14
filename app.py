@@ -1,4 +1,5 @@
 import os
+import requests
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -10,13 +11,22 @@ def home():
 
 @app.route('/api/dashboard')
 def api_dashboard():
-    # Exemplo de resposta mockada, substitua pelo consumo real do n8n se necessário
-    return {
-        "clientes_sem_sinal": 5,
-        "os_em_atraso": 904,
-        "top5_disparos": ["Cliente A", "Cliente B", "Cliente C", "Cliente D", "Cliente E"],
-        "percentual_atualizacao": "15%"
-    }
+    try:
+        response = requests.get("https://n8n-n8n-start.gwlcya.easypanel.host/webhook-test/dashboard", timeout=5)
+        data = response.json()
+        return {
+            "clientes_sem_sinal": data.get("clientes_sem_sinal", 0),
+            "os_em_atraso": data.get("os_em_atraso", 0),
+            "top5_disparos": data.get("top5_disparos", []),
+            "percentual_atualizacao": data.get("percentual_atualizacao", "0%")
+        }
+    except Exception as e:
+        return {
+            "clientes_sem_sinal": "Erro",
+            "os_em_atraso": "Erro",
+            "top5_disparos": ["Erro ao buscar dados"],
+            "percentual_atualizacao": "Erro"
+        }
 
 if __name__ == "__main__":
     app.run(debug=False)
