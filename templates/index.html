@@ -141,7 +141,7 @@
   <div class="header">
     <h1><span style="color:#22a6f2">Sigma</span> + <span style="color:#22c55e">Serviço</span></h1>
     <p>Dashboard de Monitoramento em Tempo Real</p>
-    <div class="atualiza"><i class="fa fa-circle"></i> Atualizando a cada <span id="intervalo">5</span> segundos</div>
+    <div class="atualiza"><i class="fa fa-circle"></i> Aguardando atualização do servidor...</div>
   </div>
   <div class="dashboard">
     <div class="card">
@@ -174,23 +174,26 @@
     </div>
   </div>
   <script>
-    const INTERVALO = 5; // segundos
-    document.getElementById('intervalo').textContent = INTERVALO;
     async function atualizarDashboard() {
-      const response = await fetch("/api/dashboard");
-      const data = await response.json();
-      document.getElementById("clientes_sem_sinal").textContent = data.clientes_sem_sinal;
-      document.getElementById("os_em_atraso").textContent = data.os_em_atraso;
-      document.getElementById("percentual_atualizacao").textContent = data.percentual_atualizacao;
-      // Atualiza barra de progresso
-      let perc = 0;
-      if (typeof data.percentual_atualizacao === 'string' && data.percentual_atualizacao.includes('%')) {
-        perc = parseInt(data.percentual_atualizacao);
-      } else if (!isNaN(data.percentual_atualizacao)) {
-        perc = data.percentual_atualizacao;
+      try {
+        const response = await fetch("/api/dashboard");
+        const data = await response.json();
+        document.getElementById("clientes_sem_sinal").textContent = data.clientes_sem_sinal;
+        document.getElementById("os_em_atraso").textContent = data.os_em_atraso;
+        document.getElementById("percentual_atualizacao").textContent = data.percentual_atualizacao;
+        // Atualiza barra de progresso
+        let perc = 0;
+        if (typeof data.percentual_atualizacao === 'string' && data.percentual_atualizacao.includes('%')) {
+          perc = parseInt(data.percentual_atualizacao);
+        } else if (!isNaN(data.percentual_atualizacao)) {
+          perc = data.percentual_atualizacao;
+        }
+        document.getElementById("progress-bar").style.width = perc + "%";
+      } catch (e) {
+        // Se der erro, pode exibir uma mensagem ou tentar novamente depois de um tempo
+        console.error('Erro ao atualizar dashboard:', e);
       }
-      document.getElementById("progress-bar").style.width = perc + "%";
-      // Chama novamente após terminar
+      // Chama novamente após terminar (independente de sucesso ou erro)
       atualizarDashboard();
     }
     atualizarDashboard();
