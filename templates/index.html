@@ -320,13 +320,12 @@
         const response = await fetch('/api/tecnicos_os_pendentes', { signal: tecnicosAbortController.signal });
         if (!response.ok) throw new Error('Erro ao buscar técnicos');
         const data = await response.json();
-        // Ajuste: o backend já retorna um array de objetos {Nome, OSs_Pendentes}
         const ul = document.getElementById('lista_tecnicos');
         ul.innerHTML = '';
         if (Array.isArray(data) && data.length > 0) {
           data.forEach(item => {
-            li = document.createElement('li');
-            li.innerHTML = `<span>${item.Nome || item.nome}</span><span style="color:#ffc857;font-weight:700">${item.OSs_Pendentes ?? item.pendentes}</span>`;
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${item.nome}</span><span style="color:#ffc857;font-weight:700">${item.pendentes}</span>`;
             ul.appendChild(li);
           });
         } else {
@@ -337,9 +336,7 @@
           document.getElementById('lista_tecnicos').innerHTML = '<li>Erro ao carregar técnicos</li>';
         }
       }
-      if (tecnicosAtivo) {
-        setTimeout(carregarTecnicosPendentes, 0);
-      }
+      // Não faz mais chamadas recorrentes
     }
   </script>
 </body>
