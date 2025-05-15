@@ -176,7 +176,12 @@
   <script>
     async function atualizarDashboard() {
       try {
-        const response = await fetch("/api/dashboard");
+        const response = await fetch("https://n8n-n8n-start.gwlcya.easypanel.host/webhook/dashboard", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          // Se precisar enviar algo no body, adicione aqui. Caso não, pode deixar vazio ou remover o body.
+          // body: JSON.stringify({})
+        });
         const data = await response.json();
         document.getElementById("clientes_sem_sinal").textContent = data.clientes_sem_sinal;
         document.getElementById("os_em_atraso").textContent = data.os_em_atraso;
@@ -190,10 +195,9 @@
         }
         document.getElementById("progress-bar").style.width = perc + "%";
       } catch (e) {
-        // Se der erro, pode exibir uma mensagem ou tentar novamente depois de um tempo
         console.error('Erro ao atualizar dashboard:', e);
       }
-      // Chama novamente após terminar (independente de sucesso ou erro)
+      // Após finalizar, faz nova solicitação e aguarda novamente
       atualizarDashboard();
     }
     atualizarDashboard();
