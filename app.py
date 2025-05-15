@@ -31,7 +31,7 @@ def atualizar_dashboard():
     return jsonify({"status": "erro", "mensagem": "Dados inválidos."}), 400
 
 # Novo endpoint para lista de técnicos e OSs pendentes
-@app.route('/api/tecnicos_os_pendentes', methods=['POST'])
+@app.route('/api/tecnicos_os_pendentes', methods=['GET'])
 def tecnicos_os_pendentes():
     # URL do seu webhook n8n para técnicos
     webhook_url = os.environ.get('WEBHOOK_TECNICOS', 'https://n8n-n8n-start.gwlcya.easypanel.host/webhook/tecnicos_os_pendentes')
