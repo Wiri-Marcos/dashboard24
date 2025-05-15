@@ -38,13 +38,15 @@ def tecnicos_os_pendentes():
         response = requests.get(webhook_url, timeout=10)
         response.raise_for_status()
         data = response.json()
-        # Extrai a lista de técnicos do formato recebido
+        # Se já for um array de técnicos no formato correto, retorna direto
+        if isinstance(data, list) and data and isinstance(data[0], dict) and 'nome' in data[0] and 'pendentes' in data[0]:
+            return jsonify(data)
+        # Caso venha no formato antigo (array com 'resultado')
         if isinstance(data, list) and data and 'resultado' in data[0]:
             tecnicos = data[0]['resultado']
-            # Normaliza para o front: nome e pendentes
             lista = [{
-                'Nome': t.get('nome', ''),
-                'OSs_Pendentes': t.get('pendentes', 0)
+                'nome': t.get('nome', ''),
+                'pendentes': t.get('pendentes', 0)
             } for t in tecnicos]
             return jsonify(lista)
         return jsonify([])
