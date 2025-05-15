@@ -177,16 +177,14 @@
     async function atualizarDashboard() {
       try {
         const response = await fetch("https://n8n-n8n-start.gwlcya.easypanel.host/webhook/dashboard", {
-          method: "POST",
+          method: "GET",
           headers: { 'Content-Type': 'application/json' },
-          // Se precisar enviar algo no body, adicione aqui. Caso não, pode deixar vazio ou remover o body.
-          // body: JSON.stringify({})
         });
+        if (!response.ok) throw new Error('Erro na resposta do webhook');
         const data = await response.json();
         document.getElementById("clientes_sem_sinal").textContent = data.clientes_sem_sinal;
         document.getElementById("os_em_atraso").textContent = data.os_em_atraso;
         document.getElementById("percentual_atualizacao").textContent = data.percentual_atualizacao;
-        // Atualiza barra de progresso
         let perc = 0;
         if (typeof data.percentual_atualizacao === 'string' && data.percentual_atualizacao.includes('%')) {
           perc = parseInt(data.percentual_atualizacao);
@@ -196,8 +194,9 @@
         document.getElementById("progress-bar").style.width = perc + "%";
       } catch (e) {
         console.error('Erro ao atualizar dashboard:', e);
+        setTimeout(atualizarDashboard, 3000);
+        return;
       }
-      // Após finalizar, faz nova solicitação e aguarda novamente
       atualizarDashboard();
     }
     atualizarDashboard();
