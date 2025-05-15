@@ -1,49 +1,34 @@
 import os
 import requests
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'valor-padrao')
+
+# Variável global para armazenar os dados recebidos
+DADOS_DASHBOARD = {
+    "clientes_sem_sinal": 0,
+    "os_em_atraso": 0,
+    "top5_disparos": [],
+    "percentual_atualizacao": "0%"
+}
 
 @app.route('/')
 def home():
     return render_template("index.html")
 
-@app.route('/api/dashboard', methods=['GET', 'POST'])
+@app.route('/api/dashboard', methods=['GET'])
 def api_dashboard():
-    if request.method == 'POST':
-        try:
-            data = request.json
-            return {
-                "clientes_sem_sinal": data.get("clientes_sem_sinal", 0),
-                "os_em_atraso": data.get("os_em_atraso", 0),
-                "top5_disparos": data.get("top5_disparos", []),
-                "percentual_atualizacao": data.get("percentual_atualizacao", "0%")
-            }
-        except Exception as e:
-            return {
-                "error": "Erro ao processar os dados recebidos",
-                "message": str(e)
-            }, 400
-    else:
-        # Método GET permanece para compatibilidade
-        try:
-            response = requests.get("https://n8n-n8n-start.gwlcya.easypanel.host/webhook/dashboard", timeout=12)
-            data = response.json()
-            return {
-                "clientes_sem_sinal": data.get("clientes_sem_sinal", 0),
-                "os_em_atraso": data.get("os_em_atraso", 0),
-                "top5_disparos": data.get("top5_disparos", []),
-                "percentual_atualizacao": data.get("percentual_atualizacao", "0%")
-            }
-        except Exception as e:
-            return {
-                "clientes_sem_sinal": "Erro",
-                "os_em_atraso": "Erro",
-                "top5_disparos": ["Erro ao buscar dados"],
-                "percentual_atualizacao": "Erro"
-            }
+    return jsonify(DADOS_DASHBOARD)
+
+@app.route('/api/dashboard', methods=['POST'])
+def atualizar_dashboard():
+    global DADOS_DASHBOARD
+    data = request.get_json()
+    if data:
+        DADOS_DASHBOARD.update(data)
+        return jsonify({"status": "ok", "mensagem": "Indicadores atualizados com sucesso."})
+    return jsonify({"status": "erro", "mensagem": "Dados inválidos."}), 400
 
 if __name__ == "__main__":
     app.run(debug=False)
-
