@@ -322,17 +322,9 @@
         const data = await response.json();
         const ul = document.getElementById('lista_tecnicos');
         ul.innerHTML = '';
-        // Corrige para aceitar tanto array direto quanto array dentro de 'resultado'
-        let lista = [];
-        if (Array.isArray(data) && data.length > 0) {
-          if (data[0].resultado && Array.isArray(data[0].resultado)) {
-            lista = data[0].resultado;
-          } else {
-            lista = data;
-          }
-        }
-        if (lista.length > 0) {
-          lista.forEach(item => {
+        // Garante que data é um array de objetos com nome e pendentes
+        if (Array.isArray(data) && data.length > 0 && data[0].nome !== undefined && data[0].pendentes !== undefined) {
+          data.forEach(item => {
             const li = document.createElement('li');
             li.innerHTML = `<span>${item.nome}</span><span style="color:#ffc857;font-weight:700">${item.pendentes}</span>`;
             ul.appendChild(li);
