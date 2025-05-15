@@ -172,6 +172,33 @@
       <div class="progress-bar"><div class="progress" id="progress-bar" style="width:0%"></div></div>
       <div class="descricao"><i class="fa fa-info-circle"></i> Percentual de cadastros atualizados</div>
     </div>
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-bullhorn icon" style="color:#ff9800"></i>
+        <span style="font-weight:700">Top 5 Disparos</span>
+        <span class="badge badge-metrica">Ranking</span>
+      </div>
+      <ul class="top-list" id="top_disparos"></ul>
+      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais disparos</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-truck-moving icon" style="color:#22d3ee"></i>
+        <span style="font-weight:700">Top 5 Deslocamentos</span>
+        <span class="badge badge-metrica">Ranking</span>
+      </div>
+      <ul class="top-list" id="top_deslocamentos"></ul>
+      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais deslocamentos</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-unlock-alt icon" style="color:#e53935"></i>
+        <span style="font-weight:700">Top 5 Violados</span>
+        <span class="badge badge-metrica">Ranking</span>
+      </div>
+      <ul class="top-list" id="top_violados"></ul>
+      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais violações</div>
+    </div>
   </div>
   <script>
     async function atualizarDashboard() {
@@ -192,6 +219,21 @@
           perc = data.percentual_atualizacao;
         }
         document.getElementById("progress-bar").style.width = perc + "%";
+        // Atualiza listas de top 5
+        function atualizarLista(id, lista) {
+          const ul = document.getElementById(id);
+          ul.innerHTML = '';
+          if (Array.isArray(lista)) {
+            lista.slice(0, 5).forEach((item, idx) => {
+              const li = document.createElement('li');
+              li.textContent = `${idx + 1}. ${item}`;
+              ul.appendChild(li);
+            });
+          }
+        }
+        atualizarLista("top_disparos", data.clientes_mais_disparos);
+        atualizarLista("top_deslocamentos", data.clientes_mais_deslocamentos);
+        atualizarLista("top_violados", data.clientes_mais_violados);
       } catch (e) {
         console.error('Erro ao atualizar dashboard:', e);
         setTimeout(atualizarDashboard, 3000);
