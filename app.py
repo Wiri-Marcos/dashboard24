@@ -38,7 +38,14 @@ def tecnicos_os_pendentes():
         response = requests.get(webhook_url, timeout=10)
         response.raise_for_status()
         data = response.json()
-        # Se já for um array de técnicos no formato correto, retorna direto
+        # Novo formato: [{'Tecnico': 'Nome', 'QuantidadeOS': 9}, ...]
+        if isinstance(data, list) and data and 'Tecnico' in data[0] and 'QuantidadeOS' in data[0]:
+            lista = [{
+                'nome': t.get('Tecnico', ''),
+                'pendentes': t.get('QuantidadeOS', 0)
+            } for t in data]
+            return jsonify(lista)
+        # Formato antigo: [{'nome': 'Nome', 'pendentes': 9}, ...]
         if isinstance(data, list) and data and isinstance(data[0], dict) and 'nome' in data[0] and 'pendentes' in data[0]:
             return jsonify(data)
         # Caso venha no formato antigo (array com 'resultado')
