@@ -321,6 +321,24 @@
           align-items: center;
         }
       }
+      @media (max-width: 480px) {
+        .dashboard {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 10px;
+        }
+        .card {
+          min-width: 100vw;
+          max-width: 100vw;
+          width: 100vw;
+          box-sizing: border-box;
+          margin-left: -8px;
+          margin-right: -8px;
+          border-radius: 0 0 28px 28px;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+      }
       .card-expand {
         max-width: 600px !important;
         min-width: 320px;
