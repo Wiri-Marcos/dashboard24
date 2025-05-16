@@ -135,6 +135,73 @@
         .dashboard { flex-direction: column; align-items: center; gap: 18px; }
         .card { min-width: 260px; max-width: 98vw; }
       }
+      /* Responsividade para tablets */
+      @media (max-width: 768px) {
+        .header {
+          padding-top: 18px;
+        }
+        .header h1 {
+          font-size: 2em;
+        }
+        .dashboard {
+          gap: 12px;
+          margin-top: 18px;
+        }
+        .card {
+          min-width: 90vw;
+          max-width: 98vw;
+          padding: 18px 10px 14px 10px;
+        }
+        .card .valor {
+          font-size: 2em;
+        }
+        .card .descricao {
+          font-size: 0.98em;
+        }
+        .tecnicos-lista {
+          font-size: 0.98em;
+          padding: 8px 8px;
+        }
+      }
+      /* Responsividade para celulares */
+      @media (max-width: 480px) {
+        .header h1 {
+          font-size: 1.3em;
+        }
+        .header p {
+          font-size: 1em;
+        }
+        .dashboard {
+          gap: 8px;
+        }
+        .card {
+          min-width: 98vw;
+          max-width: 99vw;
+          padding: 10px 4px 10px 4px;
+        }
+        .card .card-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+        .card .valor {
+          font-size: 1.3em;
+        }
+        .card .descricao {
+          font-size: 0.92em;
+        }
+        .expand-btn {
+          margin-left: 0;
+          margin-top: 4px;
+        }
+        .tecnicos-lista {
+          font-size: 0.92em;
+          padding: 6px 4px;
+        }
+        .progress-bar {
+          height: 6px;
+        }
+      }
       .card-expand {
         max-width: 600px !important;
         min-width: 320px;
