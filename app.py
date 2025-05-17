@@ -60,5 +60,19 @@ def tecnicos_os_pendentes():
     except Exception as e:
         return jsonify([]), 500
 
+@app.route('/api/os_tecnico', methods=['POST'])
+def api_os_tecnico():
+    data = request.get_json()
+    if not data or 'nome' not in data:
+        return jsonify({'erro': 'Nome do técnico não informado.'}), 400
+    # Faz a requisição ao webhook do n8n
+    webhook_url = 'https://n8n-n8n-start.gwlcya.easypanel.host/webhook/cosulta-técnico'
+    try:
+        resp = requests.post(webhook_url, json={'nome': data['nome']}, timeout=15)
+        resp.raise_for_status()
+        return jsonify(resp.json())
+    except Exception as e:
+        return jsonify({'erro': 'Erro ao consultar OSs do técnico.'}), 500
+
 if __name__ == "__main__":
     app.run(debug=False)
