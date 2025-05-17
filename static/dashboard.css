@@ -1,0 +1,412 @@
+/* dashboard.css - estilos principais do dashboard */
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #10182a 60%, #1e293b 100%);
+  min-height: 100vh;
+  color: #e6e6e6;
+}
+.header {
+  text-align: center;
+  padding-top: 32px;
+  margin-bottom: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(16,24,42,0.98);
+  box-shadow: 0 2px 12px 0 rgba(34,211,238,0.08);
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  padding-bottom: 12px;
+}
+.header h1 {
+  font-size: 2.6em;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0;
+  background: linear-gradient(90deg, #2dd4bf 40%, #22d3ee 60%, #22c55e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2px;
+}
+.header p {
+  margin: 8px 0 0 0;
+  font-size: 1.15em;
+  color: #b0b8c1;
+}
+.header .atualiza {
+  margin-top: 8px;
+  font-size: 0.98em;
+  color: #22d3ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.header .atualiza i {
+  color: #22c55e;
+  font-size: 0.8em;
+}
+.dashboard {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+  padding-bottom: 24px;
+}
+.card {
+  background: #19213a;
+  border-radius: 22px;
+  box-shadow: 0 6px 32px 0 rgba(34,211,238,0.10), 0 1.5px 6px 0 rgba(34,197,94,0.08);
+  padding: 28px 28px 22px 28px;
+  min-width: 320px;
+  max-width: 340px;
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 22px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1.5px solid rgba(34,211,238,0.08);
+}
+#card_os_atrasadas {
+  transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s, transform 0.2s;
+  overflow: hidden;
+}
+#card_os_atrasadas.card-expand {
+  max-width: 340px;
+  min-width: 320px;
+}
+.card:active, .card:focus-within {
+  box-shadow: 0 8px 40px 0 rgba(34,211,238,0.18), 0 2px 8px 0 rgba(34,197,94,0.12);
+  transform: scale(0.98);
+}
+.card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.card .card-header .icon {
+  font-size: 1.3em;
+  margin-right: 2px;
+}
+.card .card-header .badge {
+  font-size: 0.95em;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 2px 12px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.badge-critico {
+  background: #2e1a1a;
+  color: #ff5c5c;
+  border: 1px solid #ff5c5c;
+}
+.badge-alerta {
+  background: #3a2e1a;
+  color: #ffc857;
+  border: 1px solid #ffc857;
+}
+.badge-metrica {
+  background: #1a263a;
+  color: #22d3ee;
+  border: 1px solid #22d3ee;
+}
+.card .valor {
+  font-size: 2.6em;
+  font-weight: 700;
+  color: #22a6f2;
+  margin: 0 0 8px 0;
+}
+.card .valor.percentual {
+  color: #22c55e;
+}
+.card .descricao {
+  font-size: 1em;
+  color: #b0b8c1;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #232c43 60%, #1e293b 100%);
+  border-radius: 6px;
+  margin: 12px 0 6px 0;
+  overflow: hidden;
+}
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e 60%, #22d3ee 100%);
+  border-radius: 6px;
+  transition: width 0.5s;
+  box-shadow: 0 1.5px 6px 0 rgba(34,197,94,0.10);
+}
+@media (max-width: 1100px) {
+  .dashboard { flex-direction: column; align-items: center; gap: 18px; }
+  .card { min-width: 260px; max-width: 98vw; }
+}
+@media (max-width: 768px) {
+  .header {
+    padding-top: 18px;
+    padding-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 2em;
+  }
+  .dashboard {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .card {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 18px 10px 14px 10px;
+  }
+  .card .valor {
+    font-size: 2em;
+  }
+  .card .descricao {
+    font-size: 0.98em;
+  }
+  .tecnicos-lista {
+    font-size: 0.98em;
+  }
+}
+@media (max-width: 480px) {
+  .header {
+    padding-top: 10px;
+    padding-bottom: 6px;
+  }
+  .header h1 {
+    font-size: 1.3em;
+  }
+  .header p {
+    font-size: 0.98em;
+  }
+  .dashboard {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .card {
+    min-width: 98vw;
+    max-width: 99vw;
+    padding: 10px 2vw 10px 2vw;
+  }
+  .card .valor {
+    font-size: 1.3em;
+  }
+  .card .descricao {
+    font-size: 0.92em;
+  }
+  .expand-btn {
+    font-size: 1em;
+    padding: 2px 4px;
+  }
+  .tecnicos-lista {
+    font-size: 0.95em;
+  }
+  .progress-bar {
+    height: 6px;
+  }
+  #lista_tecnicos li {
+    font-size: 0.98em;
+    padding: 5px 6px 5px 6px;
+  }
+  .badge-critico, .badge-alerta, .badge-metrica {
+    font-size: 0.85em;
+    padding: 1px 6px;
+  }
+  .overlay-os {
+    padding: 18px 0 0 0;
+  }
+  .overlay-os h2 {
+    font-size: 1.2em;
+  }
+  .os-container {
+    gap: 8px;
+    max-width: 99vw;
+  }
+  .os-card {
+    min-width: 90vw;
+    max-width: 99vw;
+    padding: 10px 4vw 8px 4vw;
+  }
+}
+@media (max-width: 480px) {
+  .dashboard {
+    gap: 4px;
+  }
+  .card {
+    margin-bottom: 8px;
+  }
+}
+.card-expand {
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.28);
+  transition: box-shadow 0.3s;
+}
+.expand-btn {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.1em;
+  color: #b0b8c1;
+  transition: transform 0.2s;
+  border-radius: 50%;
+  background: rgba(34,211,238,0.08);
+  padding: 4px 6px;
+  margin-top: 0;
+  border: none;
+  outline: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.expand-btn.expanded {
+  transform: rotate(180deg);
+}
+.expand-btn:active {
+  background: rgba(34,197,94,0.18);
+  transform: scale(1.15);
+}
+.tecnicos-lista {
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tecnicos-lista.active {
+  max-height: 400px;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#lista_tecnicos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 2px;
+}
+#lista_tecnicos li span:last-child {
+  min-width: 22px;
+  text-align: right;
+  margin-left: 12px;
+  display: inline-block;
+}
+#lista_tecnicos {
+  margin-top: 10px;
+  padding: 0 0 0 0;
+}
+#lista_tecnicos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 7px;
+  background: rgba(34,211,238,0.08);
+  border-radius: 10px;
+  padding: 7px 14px 7px 12px;
+  font-size: 1.08em;
+  font-weight: 500;
+  box-shadow: 0 1px 4px 0 rgba(34,211,238,0.06);
+  transition: background 0.2s;
+}
+#lista_tecnicos li:hover {
+  background: rgba(34,197,94,0.13);
+}
+#lista_tecnicos li span.nome-tecnico {
+  color: #e6e6e6;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+#lista_tecnicos li span.numero-os {
+  min-width: 28px;
+  text-align: right;
+  margin-left: 18px;
+  display: inline-block;
+  background: #ffc857;
+  color: #22223b;
+  font-weight: 800;
+  font-size: 1.13em;
+  border-radius: 7px;
+  padding: 2px 10px;
+  box-shadow: 0 1px 4px 0 rgba(34,197,94,0.10);
+}
+.overlay-os {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(16,24,42,0.92);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 0 0 0;
+  overflow-y: auto;
+}
+.overlay-os .close-btn {
+  position: absolute;
+  top: 24px;
+  right: 36px;
+  background: #ff5c5c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(34,211,238,0.13);
+  transition: background 0.2s;
+}
+.overlay-os .close-btn:hover {
+  background: #e53935;
+}
+.overlay-os h2 {
+  color: #22d3ee;
+  margin-bottom: 18px;
+  font-size: 2em;
+}
+.os-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+}
+.os-card {
+  background: #19213a;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px 0 rgba(34,211,238,0.10);
+  padding: 18px 18px 12px 18px;
+  min-width: 260px;
+  max-width: 320px;
+  flex: 1 1 260px;
+  margin-bottom: 18px;
+}
+.os-card h3 {
+  margin: 0 0 8px 0;
+  color: #22d3ee;
+  font-size: 1.1em;
+}
+.os-card .campo {
+  margin-bottom: 7px;
+}
+.os-card .campo strong {
+  color: #22c55e;
+  font-weight: 700;
+}
+.os-card .obs {
+  color: #ffc857;
+  font-size: 0.98em;
+  white-space: pre-line;
+}
