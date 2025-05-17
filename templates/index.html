@@ -6,73 +6,208 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/dashboard.css">
+    <style>
+      body {
+        background: linear-gradient(135deg, #0a1626 60%, #1e293b 100%);
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Roboto', Arial, sans-serif;
+        color: #e6e6e6;
+      }
+      .main-container {
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 0 18px;
+      }
+      .dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 28px;
+        margin-top: 32px;
+      }
+      .card {
+        background: linear-gradient(135deg, #19213a 80%, #10182a 100%);
+        border-radius: 22px;
+        box-shadow: 0 6px 32px 0 rgba(34,211,238,0.13), 0 1.5px 6px 0 rgba(34,197,94,0.10);
+        padding: 28px 28px 22px 28px;
+        min-width: 280px;
+        max-width: 340px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin-bottom: 22px;
+        border: 2px solid #22d3ee44;
+        transition: box-shadow 0.2s, transform 0.2s, border 0.3s;
+        overflow: hidden;
+        animation: card-glow 3s infinite alternate;
+      }
+      .card .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        border-bottom: 1.5px solid #22d3ee33;
+        padding-bottom: 6px;
+        position: relative;
+      }
+      .card .card-header .icon {
+        font-size: 1.5em;
+        margin-right: 2px;
+        filter: drop-shadow(0 0 6px #22d3ee88);
+        animation: icon-pulse 2s infinite alternate;
+      }
+      .valor {
+        font-size: 3.2em;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 6px;
+      }
+      .subindicador {
+        margin-bottom: 8px;
+      }
+      .top-list {
+        margin: 0 0 8px 0;
+        padding: 0;
+        list-style: none;
+      }
+      .top-list li {
+        background: rgba(34,211,238,0.08);
+        border-radius: 10px;
+        padding: 7px 14px 7px 12px;
+        font-size: 1.08em;
+        font-weight: 500;
+        margin-bottom: 7px;
+        box-shadow: 0 1px 4px 0 #22d3ee11;
+        transition: background 0.2s;
+      }
+      .top-list li:hover {
+        background: rgba(34,197,94,0.18);
+      }
+      .dashboard-row {
+        display: flex;
+        gap: 28px;
+        margin-bottom: 28px;
+      }
+      .dashboard-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      @media (max-width: 900px) {
+        .dashboard { grid-template-columns: 1fr; }
+      }
+      .logo-img {
+        max-width: 56px;
+        max-height: 56px;
+        border-radius: 0;
+        /* Removido border-radius: 50% para não ficar circular */
+      }
+      .logo-header-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+    </style>
 </head>
 <body>
   <div class="header">
-    <h1><span style="color:#22a6f2">Security</span> <span style="color:#22c55e">24h</span></h1>
+    <div class="logo-header-wrapper">
+      <img src="/static/img/logo.png" alt="Logo Security 24h" class="logo-img">
+      <h1><span style="color:#ffc857">Security</span> <span style="color:#ffd700">24h</span></h1>
+    </div>
     <p>Dashboard de Monitoramento em Tempo Real</p>
     <div class="atualiza"><i class="fa fa-circle"></i> Aguardando atualização do servidor...</div>
   </div>
-  <div class="dashboard">
-    <div class="card" id="card_os_atrasadas">
-      <div class="card-header">
-        <i class="fa fa-exclamation-circle icon" style="color:#ff5c5c"></i>
-        <span style="font-weight:700">OSs Pendentes</span>
-        <span class="badge badge-critico">Crítico</span>
-        <i class="fa fa-chevron-down expand-btn" id="expand-btn-os" title="Expandir"></i>
+  <button id="fullscreen-btn" title="Tela Cheia">
+      <i class="fa fa-expand"></i>
+    </button>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('fullscreen-btn');
+        function setIcon() {
+          if (!document.fullscreenElement) {
+            btn.innerHTML = '<i class="fa fa-expand"></i>';
+          } else {
+            btn.innerHTML = '<i class="fa fa-compress"></i>';
+          }
+        }
+        btn.addEventListener('click', function() {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+          } else {
+            document.exitFullscreen();
+          }
+        });
+        document.addEventListener('fullscreenchange', setIcon);
+      });
+    </script>
+  <div class="main-container">
+    <div class="dashboard">
+      <div class="card" id="card_os_atrasadas">
+        <div class="card-header">
+          <i class="fa fa-exclamation-circle icon" style="color:#ff5c5c"></i>
+          <span style="font-weight:700">OSs Pendentes</span>
+          <span class="badge badge-critico">Crítico</span>
+          <i class="fa fa-chevron-down expand-btn" id="expand-btn-os" title="Expandir"></i>
+        </div>
+        <div class="valor" id="os_em_atraso">0</div>
+        <div class="subindicador">
+          <span class="sub-label">OSs Concluídas:</span>
+          <span class="sub-valor" id="os_concluidas">0</span>
+        </div>
+        <div class="descricao"><i class="fa fa-info-circle"></i> Ordens de serviço pendentes</div>
+        <div class="tecnicos-lista" id="tecnicos-lista">
+          <strong style="color:#22d3ee;">Técnicos e OSs Pendentes</strong>
+          <ul id="lista_tecnicos"></ul>
+        </div>
       </div>
-      <div class="valor" id="os_em_atraso">0</div>
-      <div class="descricao"><i class="fa fa-info-circle"></i> Ordens de serviço pendentes</div>
-      <div class="tecnicos-lista" id="tecnicos-lista">
-        <strong style="color:#22d3ee;">Técnicos e OSs Pendentes</strong>
-        <ul id="lista_tecnicos"></ul>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-wifi icon" style="color:#ffc857"></i>
+          <span style="font-weight:700">Clientes Sem Sinal</span>
+          <span class="badge badge-alerta">Alerta</span>
+        </div>
+        <div class="valor" id="clientes_sem_sinal">0</div>
+        <div class="descricao"><i class="fa fa-info-circle"></i> Clientes sem comunicação nos últimos 30 min</div>
       </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <i class="fa fa-wifi icon" style="color:#ffc857"></i>
-        <span style="font-weight:700">Clientes Sem Sinal</span>
-        <span class="badge badge-alerta">Alerta</span>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-database icon" style="color:#22d3ee"></i>
+          <span style="font-weight:700">Atualização Cadastral</span>
+          <span class="badge badge-metrica">Métrica</span>
+        </div>
+        <div class="valor percentual" id="percentual_atualizacao">0%</div>
+        <div class="progress-bar"><div class="progress" id="progress-bar" style="width:0%"></div></div>
+        <div class="descricao"><i class="fa fa-info-circle"></i> Percentual de cadastros atualizados</div>
       </div>
-      <div class="valor" id="clientes_sem_sinal">0</div>
-      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes sem comunicação nos últimos 30 min</div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <i class="fa fa-database icon" style="color:#22d3ee"></i>
-        <span style="font-weight:700">Atualização Cadastral</span>
-        <span class="badge badge-metrica">Métrica</span>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-bullhorn icon" style="color:#ff9800"></i>
+          <span style="font-weight:700">Top 5 Disparos</span>
+          <span class="badge badge-metrica">Ranking</span>
+        </div>
+        <ul class="top-list" id="top_disparos"></ul>
+        <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais disparos</div>
       </div>
-      <div class="valor percentual" id="percentual_atualizacao">0%</div>
-      <div class="progress-bar"><div class="progress" id="progress-bar" style="width:0%"></div></div>
-      <div class="descricao"><i class="fa fa-info-circle"></i> Percentual de cadastros atualizados</div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <i class="fa fa-bullhorn icon" style="color:#ff9800"></i>
-        <span style="font-weight:700">Top 5 Disparos</span>
-        <span class="badge badge-metrica">Ranking</span>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-truck-moving icon" style="color:#22d3ee"></i>
+          <span style="font-weight:700">Top 5 Deslocamentos</span>
+          <span class="badge badge-metrica">Ranking</span>
+        </div>
+        <ul class="top-list" id="top_deslocamentos"></ul>
+        <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais deslocamentos</div>
       </div>
-      <ul class="top-list" id="top_disparos"></ul>
-      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais disparos</div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <i class="fa fa-truck-moving icon" style="color:#22d3ee"></i>
-        <span style="font-weight:700">Top 5 Deslocamentos</span>
-        <span class="badge badge-metrica">Ranking</span>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-unlock-alt icon" style="color:#e53935"></i>
+          <span style="font-weight:700">Top 5 Violados</span>
+          <span class="badge badge-metrica">Ranking</span>
+        </div>
+        <ul class="top-list" id="top_violados"></ul>
+        <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais violações</div>
       </div>
-      <ul class="top-list" id="top_deslocamentos"></ul>
-      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais deslocamentos</div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <i class="fa fa-unlock-alt icon" style="color:#e53935"></i>
-        <span style="font-weight:700">Top 5 Violados</span>
-        <span class="badge badge-metrica">Ranking</span>
-      </div>
-      <ul class="top-list" id="top_violados"></ul>
-      <div class="descricao"><i class="fa fa-info-circle"></i> Clientes com mais violações</div>
     </div>
   </div>
   <script src="/static/dashboard.js"></script>

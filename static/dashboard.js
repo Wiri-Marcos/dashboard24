@@ -10,6 +10,7 @@ async function atualizarDashboard() {
     const data = await response.json();
     document.getElementById("clientes_sem_sinal").textContent = data.clientes_sem_sinal;
     document.getElementById("os_em_atraso").textContent = data.os_em_atraso;
+    document.getElementById("os_concluidas").textContent = data.os_concluidas !== undefined ? data.os_concluidas : 0;
     document.getElementById("percentual_atualizacao").textContent = data.percentual_atualizacao;
     let perc = 0;
     if (typeof data.percentual_atualizacao === 'string' && data.percentual_atualizacao.includes('%')) {

@@ -9,6 +9,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'valor-padrao')
 DADOS_DASHBOARD = {
     "clientes_sem_sinal": 0,
     "os_em_atraso": 0,
+    "os_concluidas": 0,  # Novo campo para OSs concluídas
     "top5_disparos": [],
     "percentual_atualizacao": "0%"
 }
